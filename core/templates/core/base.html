@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda|BuenosAires</title>
+    {% load static %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+</head>
+<body>
+
+    <!--Menu-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">BuenosAires</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/' %} active {% endif %}" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/productos/' %} active {% endif %}" href="{% url 'productos' %}">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/servicios/' %} active {% endif %}" href="{% url 'servicios' %}">Servicios</a>
+                </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!--Contenido-->
+    <div class="container-fluid mt-2">
+        {% block contenido %}
+
+        {% endblock %}
+    </div>
+
+
+
+    <!--Footer-->
+    <div class="container-fluid">
+
+        <div class="row p-5 pb-2 bg-primary text-white">
+
+            <div class="col-xs-12 col-md-6 col-lg-3">
+                <p class="h3 mb-3">Buenos Aires</p>
+                <a href="#" class="text-white"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="text-white"><i class="fa-brands fa-facebook-square"></i></a>
+                <a href="#" class="text-white"><i class="fa-brands fa-twitter-square"></i></a>
+                <a href="#" class="text-white"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+            <div class="col-xs-12 col-md-6 col-lg-3">
+                <p class="h5 mb-3">Contacto</p>
+                <div class="mb-2">
+                    <a href="#" class="text-white text-decoration-none">Teléfonos de contacto</a>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-6 col-lg-3">
+                <p class="h5 mb-3">Soporte técnico</p>
+                <div class="mb-2">
+                    <a href="#" class="text-white text-decoration-none">Servicio técnico</a>
+                </div>
+                <div class="mb-2">
+                    <a href="#" class="text-white text-decoration-none">Repuestos equipos Anwo</a>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-6 col-lg-3">
+                <p class="h5 mb-3">Documentos</p>
+                <div class="mb-2">
+                    <a href="#" class="text-white text-decoration-none">Terminos y condiciones</a>
+                </div>
+                <div class="mb-2">
+                    <a href="#" class="text-white text-decoration-none">Politica de devoluciones</a>
+                </div>
+            </div>
+
+            <div class="col-xs-12 pt-4">
+                <p class="text-white text-center">Copyright © BuenosAires 2022. Todos los derechos reservados.</p>
+            </div>
+        </div>
+
+        
+    </div>
+
+    <script src="https://kit.fontawesome.com/8d882167f9.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>        
+</body>
+</html>
