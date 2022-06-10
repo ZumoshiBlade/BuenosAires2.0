@@ -17,7 +17,24 @@ def productos(request):
 
 @login_required
 def servicios(request):
-    return render(request, 'core/servicios.html')
+
+    data={
+        'metodo_pago': listado_ppago(request.user.username),
+        'servicios': listado_servicio()
+    }
+    
+    if request.method == 'POST':
+        servicio = request.POST.get('servicios')
+        metodo_pago = request.POST.get('metodo_pago')
+        usuario = request.user.username
+        salida = solicitar_servicio(usuario, servicio, metodo_pago)
+
+        if salida == 1:
+            messages.success(request, "¡Servicio solicitado!")
+            return redirect(to="home")
+        else:
+            messages.warning(request, "No se ha podido solicitar el servicio :(")
+    return render(request, 'core/servicios.html', data)
 
 @login_required
 def perfil(request):
@@ -77,6 +94,18 @@ def add_metodo_pago(num_tarjeta, nombre, apellido, fecha_exp, codigo_seg, rut, i
 
     return salida.getvalue()
 
+def solicitar_servicio(id_user, servicio, metodo_pago):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)   
+
+    cursor.callproc('SP_SOLICITAR_SERVICIO', [id_user, servicio, metodo_pago, salida])  
+
+    return salida.getvalue()
+
+
+
+
 def listado_tpago():
     django_cursor = connection.cursor()
     cursor = django_cursor.connection.cursor()
@@ -89,3 +118,29 @@ def listado_tpago():
         lista.append(fila)
 
     return lista
+
+def listado_ppago(username):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("SP_LISTAR_METODO_PAGO", [username , out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+
+    return lista  
+
+def listado_servicio():
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("SP_LISTAR_SERVICIO", [out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+
+    return lista 
