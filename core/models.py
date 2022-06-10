@@ -6,7 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150, blank=True, null=True)
@@ -83,7 +83,7 @@ class CompraProducto(models.Model):
     id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto')
     id_metodo = models.ForeignKey('MetodoPago', models.DO_NOTHING, db_column='id_metodo')
     id_estado = models.ForeignKey('EstadoCompra', models.DO_NOTHING, db_column='id_estado')
-    id_user = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='id_user')
+    id_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         managed = False
@@ -163,7 +163,7 @@ class MetodoPago(models.Model):
     codigo_seguridad = models.BigIntegerField()
     rut_titular = models.CharField(max_length=200)
     id_tp = models.ForeignKey('TipoPago', models.DO_NOTHING, db_column='id_tp')
-    id_user = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='id_user')
+    id_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         managed = False
@@ -224,7 +224,7 @@ class SolicitudServ(models.Model):
     fecha_solicitud = models.DateField()
     id_servicio = models.ForeignKey(Servicio, models.DO_NOTHING, db_column='id_servicio')
     id_metodo = models.ForeignKey(MetodoPago, models.DO_NOTHING, db_column='id_metodo')
-    id_user = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='id_user')
+    id_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         managed = False
@@ -264,7 +264,7 @@ class Ubicacion(models.Model):
     n_hogar = models.BigIntegerField()
     adicional = models.CharField(max_length=300, blank=True, null=True)
     id_comuna = models.ForeignKey(Comuna, models.DO_NOTHING, db_column='id_comuna')
-    id_user = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='id_user')
+    id_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         managed = False

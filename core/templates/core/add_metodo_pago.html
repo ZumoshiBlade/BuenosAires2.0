@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar metodo pago</title>
+    {% load static %}
+</head>
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+
+        <label for="">Número de la tarjeta</label>
+        <input type="number" name="numero_tarjeta">
+        <br>
+        <label for="">Nombre propietario</label>
+        <input type="text" name="nombre">
+        <br>
+        <label for="">Apellido propietario</label>
+        <input type="text" name="apellido">
+        <br>
+        <label for="">Fecha expiración</label>
+        <input type="date" name="fecha_expiracion">
+        <br>
+        <label for="">Código de seguridad</label>
+        <input type="number" name="codigo_seguridad">
+        <br>
+        <label for="">Rut titular</label>
+        <input type="text" name="rut">
+        <br>
+        <label for="">Tipo pago</label>
+        <select name="tipo_pago" id="tipo_pago">
+            <option value="">Seleccionar</option>
+            {% for t in tipo_pago %}
+                <option value="{{ t.0 }}">{{t.1}}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <input type="submit" value="Guardar">
+    </form>
+</body>
+</html>
