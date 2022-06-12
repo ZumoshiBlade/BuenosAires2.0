@@ -3,17 +3,23 @@
 {% block contenido %}
 <div class="container-fluid mb-5">
     <div class="row">
-
-        <div class="col-3 mt-4">
-            <div class="card" style="width: 18rem;">
-                <img src="{% static 'core/img/imagen4.jpg' %}" class="card-img-top" alt="...">
-                <div class="card-body text-center">
-                    <p class="card-text fw-light">Nombre Producto</p>
-                    <p class="card-text text-muted">Precio: 500$</p>
-                    <a href="#" class="btn btn-primary">Comprar</a>
+        {% for p in productos %}
+            <div class="col-3 mt-4">
+                <div class="card" style="width: 18rem;">
+                    {% if p.imagen %}
+                        <img src="data:imagen/jpg;base64,{{p.imagen}}" class="card-img-top" alt="..." height="300px" width="300px">
+                    {% else %}
+                        <img src="{% static 'core/img/noImg.png' %}" class="card-img-top" alt="..." height="300px" width="300px">
+                    {% endif %}
+                    
+                    <div class="card-body text-center">
+                        <p class="card-text fw-light">{{p.data.1}}</p>
+                        <p class="card-text text-muted">{{p.data.4}} $</p>
+                        <a href="#" class="btn btn-primary">Comprar</a>
+                    </div>
                 </div>
             </div>
-        </div>
+        {% endfor %}
     </div>
     
 </div>
