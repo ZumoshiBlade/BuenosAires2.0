@@ -1,16 +1,12 @@
-from ast import Try
-from email import message
-from urllib import response
 from django.db import connection
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import redirect, render
 from .forms import CustomUserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required 
-from django.contrib.auth.models import User
 import cx_Oracle
 import base64
-from core import models
+import requests
 # Create your views here.
 
 
@@ -18,15 +14,18 @@ def home(request):
     return render(request, 'core/home.html')
 
 def productos(request):
-    datos_productos=listar_productos()
+    #Productos de ANWO
+    respose = requests.get('http://localhost:51214/api/Producto').json()
+    #Productos Buenos Aires
 
+    datos_productos=listar_productos()
     arreglo = []
 
     for i in datos_productos:
         if i[5]:
             data = {
             'data': i,
-            'imagen': str(base64.b64encode(i[5].read()), 'utf-8')
+            'imagen': str(base64.b64encode(i[5].read()), 'utf-8'),
             }
         else:
             data = {
@@ -35,10 +34,9 @@ def productos(request):
         arreglo.append(data)
         
     data = {
-        'productos' : arreglo
+        'productos' : arreglo,
     }
-
-    return render(request, 'core/productos.html', data)
+    return render(request, 'core/productos.html', data)    
 
 @login_required
 def servicios(request):
