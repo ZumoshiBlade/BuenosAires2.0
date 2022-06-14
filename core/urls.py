@@ -7,5 +7,7 @@ urlpatterns = [
     path('servicios/', views.servicios, name="servicios"),
     path('registro/',views.registro, name="registro"),
     path('perfil/',views.perfil, name="perfil"),
-    path('agregar_metodo_pago/',views.agregar_metodo_pago, name="add_mp"),
+    path('agregar_metodo_pago/',views.metodo_pago, name="add_mp"),
+    path('lista_metodo_pago/', views.lista_metodo_pago, name="list_mp"),
+    path('eliminar_metodo_pago/<id>/', views.eliminar_metodo_pago, name="delete_mp")
 ]

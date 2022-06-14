@@ -1,0 +1,62 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block contenido %}
+
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="card m-5 shadow-sm p-3 mb-5 bg-body rounded">
+            <div class="card-body">
+                <h5 class="card-title fw-bolder text-center">Agregar metodo de pago</h5>
+                
+                <form action="" method="post">
+                
+                    {% csrf_token %}
+        
+                    <div class="mb-3">
+                        <label for="" class="form-label">Número de la tarjeta</label>
+                        <input type="number" name="numero_tarjeta" class="form-control" class="form-control">
+                    </div>
+        
+                    <div class="mb-3">
+                        <label for="" class="form-label">Nombre propietario</label>
+                        <input type="text" name="nombre" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Apellido propietario</label>
+                        <input type="text" name="apellido" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Fecha expiración</label>
+                        <input type="date" name="fecha_expiracion" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Código de seguridad</label>
+                        <input type="number" name="codigo_seguridad" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Rut titular</label>
+                        <input type="text" name="rut" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Tipo pago</label>
+                        <select name="tipo_pago" id="tipo_pago" class="form-select" class="form-label">
+                            <option value="">Seleccionar</option>
+                            {% for t in tipo_pago %}
+                                <option value="{{ t.0 }}">{{t.1}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <input type="submit" value="Guardar" class="btn btn-primary m-3">
+                        <a href="{% url 'list_mp' %}" class="btn btn-secondary m-3">Cancelar</a>
+                    </div>
+                </form>
+        
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+<div>{{ mensaje }}</div>
+{% endblock %}

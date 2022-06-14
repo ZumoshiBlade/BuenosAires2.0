@@ -1,25 +1,6 @@
 {% extends 'core/base.html' %}
 {% load static %}
 {% block contenido %}
-    
-    <form action="" method="post">
-        {% csrf_token %}
-        <label for="">Servicios</label>
-        <select name="servicios" id="servicios">
-            <option value="">Seleccionar</option>
-            {% for s in servicios %}
-                <option value="{{ s.0 }}">{{s.1}}</option>
-            {% endfor %}
-        </select>
-        <br>
-        <label for="">Tus metodos de pago</label>
-        <select name="metodo_pago" id="metodo_pago">
-            <option value="">Seleccionar</option>
-            {% for m in metodo_pago %}
-                <option value="{{ m.0 }}">Número de tarjeta: {{m.1}}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Solicitar">
-    </form>
+
 
 {% endblock %}

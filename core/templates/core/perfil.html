@@ -1,16 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil de usuario</title>
-</head>
-<body>
+{% extends 'core/base.html' %}
+{% load static %}
+{% block contenido %}
+<div class="row mb-2">
+    <div class="col-md-2"></div>
     {% if user.is_authenticated %}
-    <h1>Esto es un perfil de usuario</h1>
-    <h1>¡Bienvenido {{ user.username }}!</h1>
-    <a href="{% url 'add_mp' %}">Agregar metodo de pago</a>
+    <div class="col-md-8">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col-auto d-none d-lg-block">
+                <a href="" class="profile-photo"><img src="{% static 'core/img/sin-foto.png' %}" alt="" width="250" height="250"></a>
+            </div>
+            <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">Perfil de usuario</strong>
+                <h3 class="mb-0">Usuario: {{ user.username }}</h3>
+                <a href="{% url 'list_mp' %}">Gestionar metodo de pago</a>
+            </div>
+
+        </div>
+    </div>
     {% endif %}
-</body>
-</html>
+    <div class="col-md-2"></div>
+</div>
+<div class="row mb-2">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+                <strong class="d-inline-block mb-2 text-primary">Compras y servicios</strong>
+                <h3 class="mb-0">Solicitudes de servicio</h3>
+                <h3 class="mb-0">Solicitudes de productos</h3>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-2"></div>
+</div>
+{% endblock %}
