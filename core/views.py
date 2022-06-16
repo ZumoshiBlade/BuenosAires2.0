@@ -15,7 +15,6 @@ def home(request):
 
 def productos(request):
     #Productos de ANWO
-    respose = requests.get('http://localhost:51214/api/Producto').json()
     #Productos Buenos Aires
 
     datos_productos=listar_productos()
@@ -37,6 +36,29 @@ def productos(request):
         'productos' : arreglo,
     }
     return render(request, 'core/productos.html', data)    
+
+
+def detalle_producto(request, id):
+
+    producto = ver_producto(id)
+    arreglo = []
+
+    for i in producto:
+        if i[5]:
+            data = {
+            'data': i,
+            'imagen': str(base64.b64encode(i[5].read()), 'utf-8'),
+            }
+        else:
+            data = {
+            'data': i,
+            }
+    arreglo.append(data)
+    data = {
+    'producto' : arreglo,
+    }
+
+    return render(request, 'core/detalle_producto.html', data)
 
 @login_required
 def servicios(request):
@@ -159,3 +181,17 @@ def eliminar_metodo_pago(request,id):
 
 
     return redirect(to='list_mp')
+
+def ver_producto(id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("SP_VER_PRODUCTO", [id, out_cur])
+
+    lista = []
+    for fila in out_cur:
+        lista.append(fila)
+
+    return lista 
+

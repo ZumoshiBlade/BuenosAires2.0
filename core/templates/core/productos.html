@@ -15,7 +15,7 @@
                     <div class="card-body text-center">
                         <p class="card-text fw-light">{{p.data.1}}</p>
                         <p class="card-text text-muted">{{p.data.4}} $</p>
-                        <a href="#" class="btn btn-primary">Comprar</a>
+                        <a href="{% url 'detalle_producto' p.data.0 %}" class="btn btn-primary">Comprar</a>
                     </div>
                 </div>
             </div>
