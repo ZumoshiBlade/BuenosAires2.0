@@ -1,0 +1,34 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block contenido %}
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card m-5 shadow-sm p-3 mb-5 bg-body rounded">
+                <div class="card-body">
+                    <h5 class="card-title fw-bolder text-center">Realización de compra</h5>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="" class="form-label">Metodo de pago</label>
+                            <select name="tipo_pago" id="tipo_pago" class="form-select" class="form-label">
+                                <option value="">Seleccionar</option>
+                                {% for m in tarjeta %}
+                                    <option value="{{ m.0 }}"> Número tarjeta: {{ m.1 }} || Propietario: {{ m.2 }} {{ m.3 }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <input type="submit" value="Confirmar Compra" class="btn btn-primary m-3">
+                            <a href="{% url 'productos' %}" class="btn btn-secondary m-3">Cancelar</a>
+                        </div>
+                        <hr>
+                        <a href="{% url 'list_mp' %}" class="text-decoration-none">¿No tienes metodo de pago?</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

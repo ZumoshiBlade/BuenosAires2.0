@@ -19,7 +19,7 @@
                 <p>Stock: {{p.data.3}}</p>
                 <p>Precio: {{p.data.4}} $</p>
                 <p>{{p.data.2}}</p>
-                <div class="mt-5"><a href="#" class="btn btn-primary">Comprar</a></div>
+                <div class="mt-5"><a href="{% url 'sistema_pago' p.data.0 %}" class="btn btn-primary">Comprar</a></div>
             </div>
         </div>
     </div>

@@ -1,5 +1,5 @@
 from django.db import connection
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render 
 from .forms import CustomUserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 import cx_Oracle
 import base64
 import requests
+from zeep import Client
 # Create your views here.
 
 
@@ -15,6 +16,7 @@ def home(request):
 
 def productos(request):
     #Productos de ANWO
+    
     #Productos Buenos Aires
 
     datos_productos=listar_productos()
@@ -37,7 +39,6 @@ def productos(request):
     }
     return render(request, 'core/productos.html', data)    
 
-
 def detalle_producto(request, id):
 
     producto = ver_producto(id)
@@ -59,6 +60,37 @@ def detalle_producto(request, id):
     }
 
     return render(request, 'core/detalle_producto.html', data)
+
+@login_required
+def sistema_pago(request, id):
+
+    usuario = request.user.username
+
+    data = {
+        'tarjeta': listar_metodos_pago(usuario),
+    }
+
+    if request.method == 'POST':
+        id_tarjeta = request.POST.get('tipo_pago')
+        salida = add_compra(id, id_tarjeta, usuario)
+
+        if salida == 1:
+
+            n_tarjeta = int(obtener_num_tarjeta(id_tarjeta))
+            codigo = int(obtener_codigo(id_tarjeta))
+            precio = int(precio_producto(id))
+
+            cliente = Client("http://localhost:8080/WS_WebPay/WSPago?WSDL")
+            resultado = cliente.service.Pago(n_tarjeta, codigo, precio)
+
+            if resultado > 0:
+                return redirect(to="productos")
+            else:
+                print("Error al conectarse con webpay")
+        else:
+            messages.warning(request, "No se ha podido agregar el metodo de pago :(")
+
+    return render(request, 'core/sistema_pago.html', data)
 
 @login_required
 def servicios(request):
@@ -195,3 +227,38 @@ def ver_producto(id):
 
     return lista 
 
+def add_compra(id_producto, id_tarjeta, id_user):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    cursor.callproc('SP_COMPRA_PRODUCTO', [id_producto, id_tarjeta, id_user, salida])
+
+    return salida.getvalue()
+
+def precio_producto(id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    cursor.callproc('SP_PRECIO', [id, salida])
+
+    return salida.getvalue()
+
+def obtener_num_tarjeta(id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    cursor.callproc('SP_N_TARJETA', [id, salida])
+
+    return salida.getvalue()
+
+def obtener_codigo(id):
+    django_cursor = connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    salida = cursor.var(cx_Oracle.NUMBER)
+
+    cursor.callproc('SP_CODIGO', [id, salida])
+
+    return salida.getvalue()
