@@ -1,5 +1,17 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% block js %}
+    {% if messages %}
+        {% for m in messages %}
+            <script>
+                Swal.fire({
+                    "title": "{{m}}",
+                    "icon": "error"
+                })
+            </script>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
 {% block contenido %}
 <div class="container mt-5 mb-5">
     <div class="row">

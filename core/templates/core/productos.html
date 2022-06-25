@@ -1,25 +1,41 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% block js %}
+{% if messages %}
+    {% for m in messages %}
+        <script>
+            Swal.fire({
+                "title": "{{m}}",
+                "icon": "success"
+            })
+        </script>
+    {% endfor %}
+    {% endif %}
+{% endblock %}
 {% block contenido %}
 <div class="container-fluid mb-5">
     <div class="row">
         {% for p in productos %}
-            <div class="col-3 mt-4">
-                <div class="card" style="width: 18rem;">
-                    {% if p.imagen %}
-                        <img src="data:imagen/jpg;base64,{{p.imagen}}" class="card-img-top" alt="..." height="300px" width="300px">
-                    {% else %}
-                        <img src="{% static 'core/img/noImg.png' %}" class="card-img-top" alt="..." height="300px" width="300px">
-                    {% endif %}
-                    
-                    <div class="card-body text-center">
-                        <p class="card-text fw-light">{{p.data.1}}</p>
-                        <p class="card-text text-muted">{{p.data.4}} $</p>
-                        <a href="{% url 'detalle_producto' p.data.0 %}" class="btn btn-primary">Comprar</a>
-                    </div>
+        {% if p.data.3 != 0 %}
+        <div class="col-3 mt-4">
+            <div class="card" style="width: 18rem;">
+                {% if p.imagen %}
+                    <img src="data:imagen/jpg;base64,{{p.imagen}}" class="card-img-top" alt="..." height="300px" width="300px">
+                {% else %}
+                    <img src="{% static 'core/img/noImg.png' %}" class="card-img-top" alt="..." height="300px" width="300px">
+                {% endif %}
+                
+                <div class="card-body text-center">
+                    <p class="card-text fw-light">{{p.data.1}}</p>
+                    <p class="card-text text-muted">Stock: {{p.data.3}}</p>
+                    <p class="card-text text-muted">{{p.data.4}} $</p>
+                    <a href="{% url 'detalle_producto' p.data.0 %}" class="btn btn-primary">Comprar</a>
                 </div>
             </div>
+        </div>
+        {% endif %}
         {% endfor %}
+
     </div>
     
 </div>

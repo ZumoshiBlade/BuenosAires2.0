@@ -26,17 +26,17 @@
                             {% csrf_token %}
                             {{ form | crispy }}
                             
+                            <!-- Submit button -->
+                            
+                            <div class="col mt-5">
+                                <button type="submit" class="btn btn-primary btn-block mb-4">Registrarme</button>
+                            </div>
+
                             <div class="row mb-4">
                                 <div class="col d-flex justify-content-center">
                                     <a href="{% url 'home' %}" class="m-4 text-decoration-none">Go to home</a>
                                     <a href="{% url 'login' %}" class="m-4 text-decoration-none">Sign in</a>
                                 </div>
-                            </div>
-
-                            <!-- Submit button -->
-                            
-                            <div class="col">
-                                <button type="submit" class="btn btn-primary btn-block mb-4">Registrarme</button>
                             </div>
                         </form>
                         

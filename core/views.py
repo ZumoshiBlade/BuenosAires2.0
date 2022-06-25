@@ -72,23 +72,28 @@ def sistema_pago(request, id):
 
     if request.method == 'POST':
         id_tarjeta = request.POST.get('tipo_pago')
-        salida = add_compra(id, id_tarjeta, usuario)
+        n_tarjeta = int(obtener_num_tarjeta(id_tarjeta))
+        codigo = int(obtener_codigo(id_tarjeta))
+        precio = int(precio_producto(id))
 
-        if salida == 1:
+        cliente = Client("http://localhost:8080/WS_WebPay/WSPago?WSDL")
+        resultado = cliente.service.Pago(n_tarjeta, codigo, precio)
 
-            n_tarjeta = int(obtener_num_tarjeta(id_tarjeta))
-            codigo = int(obtener_codigo(id_tarjeta))
-            precio = int(precio_producto(id))
+        if resultado == 1:
+            salida = add_compra(id, id_tarjeta, usuario)
 
-            cliente = Client("http://localhost:8080/WS_WebPay/WSPago?WSDL")
-            resultado = cliente.service.Pago(n_tarjeta, codigo, precio)
-
-            if resultado > 0:
+            if salida > 0:
+                messages.success(request, "¡Compra realizada!")
                 return redirect(to="productos")
             else:
-                print("Error al conectarse con webpay")
+                messages.error(request, "¡Error al ingresar la compra del producto!")
+
+        elif resultado == 2:
+            messages.warning(request, "Saldo insuficiente")
+
         else:
-            messages.warning(request, "No se ha podido agregar el metodo de pago :(")
+            messages.error(request, "¡Error al conectarse con webpay!")
+
 
     return render(request, 'core/sistema_pago.html', data)
 
@@ -123,7 +128,6 @@ def metodo_pago(request):
             messages.success(request, "¡Metodo de pago agregado!")
             return redirect(to="list_mp")
         else:
-            print("Error")
             messages.warning(request, "No se ha podido agregar el metodo de pago :(")
 
     return render(request, 'metodo_pago/agregar_metodo_pago.html', data)
@@ -211,7 +215,7 @@ def eliminar_metodo_pago(request,id):
     cursor = django_cursor.connection.cursor()
     cursor.callproc("SP_ELIMINAR_MP", [id])
 
-
+    messages.success(request, "Eliminado correctamente")
     return redirect(to='list_mp')
 
 def ver_producto(id):

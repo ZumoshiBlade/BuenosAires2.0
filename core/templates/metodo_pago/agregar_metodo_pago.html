@@ -58,5 +58,18 @@
     </div>
     <div class="col-md-2"></div>
 </div>
-<div>{{ mensaje }}</div>
+
+    {% block js %}
+        {% if messages %}
+            {% for m in messages %}
+                <script>
+                    Swal.fire({
+                        "title": "{{m}}",
+                        "icon": "error"
+                    })
+                </script>
+            {% endfor %}
+        {% endif %}
+    {% endblock %}
+
 {% endblock %}

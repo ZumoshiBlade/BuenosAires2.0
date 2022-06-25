@@ -1,5 +1,36 @@
 {% extends 'core/base.html' %}
 {% load static %}
+{% block js %}
+
+<script>
+    function eliminarMetodo(id) {
+        Swal.fire({
+            "title": "¿Estas seguro?",
+            "text": "Si tienes compras realizadas con el metodo de pago no podrás eliminarlo",
+            "icon": "question",
+            "showCancelButton": true,
+            "cancelButtonText": "No, cancelar",
+            "confirmButtonText": "Si, eliminar"
+        })
+        .then(function(result){
+            if(result.isConfirmed){
+                window.location.href = "/eliminar_metodo_pago/"+id+"/"
+            }
+        })
+    }
+</script>
+
+{% if messages %}
+    {% for m in messages %}
+        <script>
+            Swal.fire({
+                "title": "{{m}}",
+                "icon": "success"
+            })
+        </script>
+    {% endfor %}
+{% endif %}
+{% endblock %}
 {% block contenido %}
 <div class="row mb-5">
     <div class="col-md-1"></div>
@@ -21,7 +52,7 @@
                             <td>{{ t.2 }} {{ t.3 }}</td>
                             <td>{{ t.9 }}</td>
                             <td class="d-flex justify-content-end">
-                                <a href="{% url 'delete_mp' t.0 %}" class="btn btn-danger m-1">Eliminar</a>
+                                <a href="#" onclick="eliminarMetodo({{ t.0 }})" class="btn btn-danger m-1">Eliminar</a>
                             </td>
                         </tr>
                         {% endfor %}
