@@ -1,0 +1,41 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block contenido %}
+<div class="container">
+    <div class="row m-5">
+        <div class="col-4"></div>
+        <div class="col-4">
+            {% if respuesta == 1 %}
+                <div class="card" style="width: 100%;">
+                    <img src="{% static 'core/img/Despachando.jpg' %}" class="card-img-top" alt="..." width="100%" height="300px">
+                    <div class="card-body text-center">
+                        <h3 class="card-text">{{ mensaje }}</h3>
+                    </div>
+                </div>
+            {% elif respuesta == 2 %}
+                <div class="card" style="width: 100%;">
+                    <img src="{% static 'core/img/Enviado.jpg' %}" class="card-img-top p-3" alt="...">
+                    <div class="card-body text-center">
+                        <h3 class="card-text">{{ mensaje }}</h3>
+                    </div>
+                </div>
+            {% elif respuesta == 3 %}
+                <div class="card" style="width: 100%;">
+                    <img src="{% static 'core/img/recibido.png' %}" class="card-img-top" alt="...">
+                    <div class="card-body text-center">
+                        <h3 class="card-text">{{ mensaje }}</h3>
+                    </div>
+                </div>
+            {% else %}
+                <div class="card" style="width: 100%;">
+                    <img src="{% static 'core/img/error.png' %}" class="card-img-top" alt="...">
+                    <div class="card-body text-center">
+                        <h3 class="card-text">{{ mensaje }}</h3>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-4"></div>
+    </div>
+</div>  
+{% endblock %}

@@ -12,4 +12,5 @@ urlpatterns = [
     path('lista_metodo_pago/', views.lista_metodo_pago, name="list_mp"),
     path('eliminar_metodo_pago/<id>/', views.eliminar_metodo_pago, name="delete_mp"),
     path('sistema_pago/<id>/',views.sistema_pago, name="sistema_pago"),
+    path('seguimiento/<id>/', views.seguimiento, name="seguimiento")
 ]

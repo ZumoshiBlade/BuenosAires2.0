@@ -103,7 +103,15 @@ def servicios(request):
 
 @login_required
 def perfil(request):
-    return render(request, 'core/perfil.html')
+    usuario = request.user.username
+    compras = listar_compras(usuario)
+
+    data = {
+        'compras': compras,
+    }
+    
+
+    return render(request, 'core/perfil.html', data)
 
 @login_required
 def metodo_pago(request):
@@ -266,3 +274,38 @@ def obtener_codigo(id):
     cursor.callproc('SP_CODIGO', [id, salida])
 
     return salida.getvalue()
+
+def listar_compras(usuario):
+    django_cursor =  connection.cursor()
+    cursor = django_cursor.connection.cursor()
+    out_cur = django_cursor.connection.cursor()
+
+    cursor.callproc("SP_LISTA_COMPRAS", [usuario, out_cur] )
+
+    lista = []
+
+    for fila in out_cur:
+        lista.append(fila)
+
+    return lista
+
+def seguimiento(request, id):
+    cliente = Client("http://localhost:8080/WS_Seguimiento/WSSeguimiento?WSDL")
+    respuesta = cliente.service.Seguimiento(id)
+
+    if respuesta == 1:
+        mensaje = "Su producto esta siendo despachado"
+    elif respuesta == 2:
+        mensaje = "Su producto va en camino"
+    elif respuesta == 3:
+        mensaje = "Su producto ya ha llegado"
+    else:
+        mensaje = "Error al capturar el seguimiento de su producto"
+
+
+    data = {
+        'respuesta': respuesta,
+        'mensaje': mensaje
+    }
+
+    return render(request, 'core/seguimiento.html', data)
