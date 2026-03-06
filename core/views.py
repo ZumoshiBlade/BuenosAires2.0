@@ -1,25 +1,21 @@
-from django.db import connection
+﻿from django.db import connection
 from django.shortcuts import redirect, render 
 from .forms import CustomUserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required 
-import cx_Oracle
 import base64
 import requests
-from zeep import Client
-# Create your views here.
+# NOTA: import oracledb y zeep deshabilitados temporalmente (sin Oracle/SOAP disponible)
+# import oracledb
+# from zeep import Client
 
 
 def home(request):
     return render(request, 'core/home.html')
 
 def productos(request):
-    #Productos de ANWO
-    
-    #Productos Buenos Aires
-
-    datos_productos=listar_productos()
+    datos_productos = listar_productos()
     arreglo = []
 
     for i in datos_productos:
@@ -72,28 +68,26 @@ def sistema_pago(request, id):
 
     if request.method == 'POST':
         id_tarjeta = request.POST.get('tipo_pago')
-        n_tarjeta = int(obtener_num_tarjeta(id_tarjeta))
-        codigo = int(obtener_codigo(id_tarjeta))
-        precio = int(precio_producto(id))
+        n_tarjeta = int(obtener_num_tarjeta(id_tarjeta) or 0)
+        codigo = int(obtener_codigo(id_tarjeta) or 0)
+        precio = int(precio_producto(id) or 0)
 
-        cliente = Client("http://localhost:8080/WS_WebPay/WSPago?WSDL")
-        resultado = cliente.service.Pago(n_tarjeta, codigo, precio)
+        # SOAP deshabilitado temporalmente (sin servidor WebPay disponible)
+        # cliente = Client("http://localhost:8080/WS_WebPay/WSPago?WSDL")
+        # resultado = cliente.service.Pago(n_tarjeta, codigo, precio)
+        resultado = 0  # stub: sin conexión SOAP
 
         if resultado == 1:
             salida = add_compra(id, id_tarjeta, usuario)
-
             if salida > 0:
                 messages.success(request, "¡Compra realizada!")
                 return redirect(to="productos")
             else:
                 messages.error(request, "¡Error al ingresar la compra del producto!")
-
         elif resultado == 2:
             messages.warning(request, "Saldo insuficiente")
-
         else:
-            messages.error(request, "¡Error al conectarse con webpay!")
-
+            messages.error(request, "¡Servicio de pago no disponible en modo estático!")
 
     return render(request, 'core/sistema_pago.html', data)
 
@@ -109,7 +103,6 @@ def perfil(request):
     data = {
         'compras': compras,
     }
-    
 
     return render(request, 'core/perfil.html', data)
 
@@ -117,7 +110,7 @@ def perfil(request):
 def metodo_pago(request):
 
     data={
-        'tipo_pago':listado_tpago()
+        'tipo_pago': listado_tpago()
     }
 
     if request.method == 'POST':
@@ -130,7 +123,6 @@ def metodo_pago(request):
         tipo_pago = request.POST.get('tipo_pago')
         usuario = request.user.username
         salida = add_metodo_pago(num_tarjeta, nombre, apellido, fecha_exp, codigo_seg, rut, tipo_pago, usuario)
-
 
         if salida == 1:
             messages.success(request, "¡Metodo de pago agregado!")
@@ -168,130 +160,131 @@ def registro(request):
 
     return render(request, 'registration/registro.html', data)
 
+
+# ---------------------------------------------------------------------------
+# Funciones de acceso a datos
+# Stubs temporales — sin Oracle disponible devuelven listas/valores vacíos.
+# Para restaurar Oracle: descomentar el bloque de código comentado en cada fn.
+# ---------------------------------------------------------------------------
+
 def add_metodo_pago(num_tarjeta, nombre, apellido, fecha_exp, codigo_seg, rut, id_tp, id_user):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    salida = cursor.var(cx_Oracle.NUMBER)
-
-    cursor.callproc('SP_AGREGAR_METODO_PAGO', [num_tarjeta, nombre, apellido, fecha_exp, codigo_seg, rut, id_tp, id_user, salida])
-
-    return salida.getvalue()
+    # Oracle stub — sin conexión a BD
+    # django_cursor = connection.cursor()
+    # cursor = django_cursor.connection.cursor()
+    # salida = cursor.var(oracledb.NUMBER)
+    # cursor.callproc('SP_AGREGAR_METODO_PAGO', [num_tarjeta, nombre, apellido, fecha_exp, codigo_seg, rut, id_tp, id_user, salida])
+    # return salida.getvalue()
+    return 0
 
 def listado_tpago():
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    out_cur = django_cursor.connection.cursor()
-
-    cursor.callproc("SP_LISTAR_TIPO_PAGO", [out_cur])
-
-    lista = []
-    for fila in out_cur:
-        lista.append(fila)
-
-    return lista
+    # Oracle stub — sin conexión a BD
+    # django_cursor = connection.cursor()
+    # cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    # cursor.callproc("SP_LISTAR_TIPO_PAGO", [out_cur])
+    # lista = []
+    # for fila in out_cur:
+    #     lista.append(fila)
+    # return lista
+    return []
 
 def listar_productos():
-
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    out_cur = django_cursor.connection.cursor()
-
-    cursor.callproc("SP_LISTAR_PRODUCTOS", [out_cur])
-
-    lista = []
-    for fila in out_cur:
-        lista.append(fila)
-
-    return lista 
+    # Oracle stub — sin conexión a BD
+    # django_cursor = connection.cursor()
+    # cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    # cursor.callproc("SP_LISTAR_PRODUCTOS", [out_cur])
+    # lista = []
+    # for fila in out_cur:
+    #     lista.append(fila)
+    # return lista
+    return []
 
 def listar_metodos_pago(usuario):
-    django_cursor =  connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    out_cur = django_cursor.connection.cursor()
+    # Oracle stub — sin conexión a BD
+    # django_cursor = connection.cursor()
+    # cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    # cursor.callproc("SP_LISTA_MT_USER", [usuario, out_cur])
+    # lista = []
+    # for fila in out_cur:
+    #     lista.append(fila)
+    # return lista
+    return []
 
-    cursor.callproc("SP_LISTA_MT_USER", [usuario, out_cur] )
-
-    lista = []
-
-    for fila in out_cur:
-        lista.append(fila)
-
-    return lista
-
-def eliminar_metodo_pago(request,id):
-    django_cursor =  connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    cursor.callproc("SP_ELIMINAR_MP", [id])
-
+def eliminar_metodo_pago(request, id):
+    # Oracle stub — sin conexión a BD
+    # django_cursor = connection.cursor()
+    # cursor = django_cursor.connection.cursor()
+    # cursor.callproc("SP_ELIMINAR_MP", [id])
     messages.success(request, "Eliminado correctamente")
     return redirect(to='list_mp')
 
 def ver_producto(id):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    out_cur = django_cursor.connection.cursor()
-
-    cursor.callproc("SP_VER_PRODUCTO", [id, out_cur])
-
-    lista = []
-    for fila in out_cur:
-        lista.append(fila)
-
-    return lista 
+    # Oracle stub — sin conexión a BD
+    # django_cursor = connection.cursor()
+    # cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    # cursor.callproc("SP_VER_PRODUCTO", [id, out_cur])
+    # lista = []
+    # for fila in out_cur:
+    #     lista.append(fila)
+    # return lista
+    return []
 
 def add_compra(id_producto, id_tarjeta, id_user):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    salida = cursor.var(cx_Oracle.NUMBER)
-
-    cursor.callproc('SP_COMPRA_PRODUCTO', [id_producto, id_tarjeta, id_user, salida])
-
-    return salida.getvalue()
+    # Oracle stub — sin conexión a BD
+    # django_cursor = connection.cursor()
+    # cursor = django_cursor.connection.cursor()
+    # salida = cursor.var(oracledb.NUMBER)
+    # cursor.callproc('SP_COMPRA_PRODUCTO', [id_producto, id_tarjeta, id_user, salida])
+    # return salida.getvalue()
+    return 0
 
 def precio_producto(id):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    salida = cursor.var(cx_Oracle.NUMBER)
-
-    cursor.callproc('SP_PRECIO', [id, salida])
-
-    return salida.getvalue()
+    # Oracle stub — sin conexión a BD
+    # django_cursor = connection.cursor()
+    # cursor = django_cursor.connection.cursor()
+    # salida = cursor.var(oracledb.NUMBER)
+    # cursor.callproc('SP_PRECIO', [id, salida])
+    # return salida.getvalue()
+    return 0
 
 def obtener_num_tarjeta(id):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    salida = cursor.var(cx_Oracle.NUMBER)
-
-    cursor.callproc('SP_N_TARJETA', [id, salida])
-
-    return salida.getvalue()
+    # Oracle stub — sin conexión a BD
+    # django_cursor = connection.cursor()
+    # cursor = django_cursor.connection.cursor()
+    # salida = cursor.var(oracledb.NUMBER)
+    # cursor.callproc('SP_N_TARJETA', [id, salida])
+    # return salida.getvalue()
+    return 0
 
 def obtener_codigo(id):
-    django_cursor = connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    salida = cursor.var(cx_Oracle.NUMBER)
-
-    cursor.callproc('SP_CODIGO', [id, salida])
-
-    return salida.getvalue()
+    # Oracle stub — sin conexión a BD
+    # django_cursor = connection.cursor()
+    # cursor = django_cursor.connection.cursor()
+    # salida = cursor.var(oracledb.NUMBER)
+    # cursor.callproc('SP_CODIGO', [id, salida])
+    # return salida.getvalue()
+    return 0
 
 def listar_compras(usuario):
-    django_cursor =  connection.cursor()
-    cursor = django_cursor.connection.cursor()
-    out_cur = django_cursor.connection.cursor()
-
-    cursor.callproc("SP_LISTA_COMPRAS", [usuario, out_cur] )
-
-    lista = []
-
-    for fila in out_cur:
-        lista.append(fila)
-
-    return lista
+    # Oracle stub — sin conexión a BD
+    # django_cursor = connection.cursor()
+    # cursor = django_cursor.connection.cursor()
+    # out_cur = django_cursor.connection.cursor()
+    # cursor.callproc("SP_LISTA_COMPRAS", [usuario, out_cur])
+    # lista = []
+    # for fila in out_cur:
+    #     lista.append(fila)
+    # return lista
+    return []
 
 def seguimiento(request, id):
-    cliente = Client("http://localhost:8080/WS_Seguimiento/WSSeguimiento?WSDL")
-    respuesta = cliente.service.Seguimiento(id)
+    # SOAP stub — sin servidor de seguimiento disponible
+    # cliente = Client("http://localhost:8080/WS_Seguimiento/WSSeguimiento?WSDL")
+    # respuesta = cliente.service.Seguimiento(id)
+    respuesta = 0  # stub
 
     if respuesta == 1:
         mensaje = "Su producto esta siendo despachado"
@@ -300,8 +293,7 @@ def seguimiento(request, id):
     elif respuesta == 3:
         mensaje = "Su producto ya ha llegado"
     else:
-        mensaje = "Error al capturar el seguimiento de su producto"
-
+        mensaje = "Servicio de seguimiento no disponible en modo estático"
 
     data = {
         'respuesta': respuesta,
@@ -309,3 +301,4 @@ def seguimiento(request, id):
     }
 
     return render(request, 'core/seguimiento.html', data)
+

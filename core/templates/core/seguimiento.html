@@ -1,41 +1,109 @@
 {% extends 'core/base.html' %}
 {% load static %}
+
 {% block contenido %}
-<div class="container">
-    <div class="row m-5">
-        <div class="col-4"></div>
-        <div class="col-4">
-            {% if respuesta == 1 %}
-                <div class="card" style="width: 100%;">
-                    <img src="{% static 'core/img/Despachando.jpg' %}" class="card-img-top" alt="..." width="100%" height="300px">
-                    <div class="card-body text-center">
-                        <h3 class="card-text">{{ mensaje }}</h3>
-                    </div>
-                </div>
-            {% elif respuesta == 2 %}
-                <div class="card" style="width: 100%;">
-                    <img src="{% static 'core/img/Enviado.jpg' %}" class="card-img-top p-3" alt="...">
-                    <div class="card-body text-center">
-                        <h3 class="card-text">{{ mensaje }}</h3>
-                    </div>
-                </div>
-            {% elif respuesta == 3 %}
-                <div class="card" style="width: 100%;">
-                    <img src="{% static 'core/img/recibido.png' %}" class="card-img-top" alt="...">
-                    <div class="card-body text-center">
-                        <h3 class="card-text">{{ mensaje }}</h3>
-                    </div>
-                </div>
-            {% else %}
-                <div class="card" style="width: 100%;">
-                    <img src="{% static 'core/img/error.png' %}" class="card-img-top" alt="...">
-                    <div class="card-body text-center">
-                        <h3 class="card-text">{{ mensaje }}</h3>
-                    </div>
-                </div>
-            {% endif %}
-        </div>
-        <div class="col-4"></div>
+<div class="container" style="padding-top:3rem;padding-bottom:4rem;max-width:600px;">
+
+    <div style="margin-bottom:2rem;">
+        <a href="{% url 'perfil' %}" style="color:var(--text-muted);text-decoration:none;font-size:.88rem;">
+            <i class="fa fa-arrow-left me-1"></i> Volver al perfil
+        </a>
     </div>
-</div>  
+
+    <div style="text-align:center;margin-bottom:2.5rem;">
+        <span class="section-label"><i class="fa fa-location-dot me-1"></i> SEGUIMIENTO</span>
+        <h1 class="section-title" style="font-size:1.8rem;">Estado de tu pedido</h1>
+    </div>
+
+    <!-- Progress Steps -->
+    <div class="glass-card" style="padding:2.5rem;">
+        {% if respuesta == 0 %}
+        <!-- Not available -->
+        <div style="text-align:center;padding:2rem 0;">
+            <div style="width:64px;height:64px;background:rgba(248,113,113,.1);border-radius:16px;
+                display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+                <i class="fa fa-triangle-exclamation" style="font-size:1.6rem;color:#fca5a5;"></i>
+            </div>
+            <h3 style="font-weight:700;margin-bottom:.5rem;">Sin información</h3>
+            <p style="color:var(--text-muted);">{{ mensaje }}</p>
+        </div>
+        {% else %}
+        <!-- Stepper -->
+        <div style="position:relative;padding:0 1rem;">
+            {% for step, label, icon, desc in steps_data %}
+            {% endfor %}
+
+            <!-- Step 1: Despachando -->
+            <div style="display:flex;align-items:flex-start;gap:1.2rem;margin-bottom:1.5rem;">
+                <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
+                    <div
+                        style="width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+                        {% if respuesta >= 1 %}background:var(--accent-grad);{% else %}background:rgba(255,255,255,.06);border:1px solid var(--glass-border);{% endif %}">
+                        <i class="fa fa-box"
+                            style="color:{% if respuesta >= 1 %}#fff{% else %}var(--text-muted){% endif %};font-size:.9rem;"></i>
+                    </div>
+                    {% if respuesta < 3 %}<div
+                        style="width:2px;height:40px;background:{% if respuesta >= 2 %}var(--accent){% else %}var(--glass-border){% endif %};margin-top:.25rem;">
+                </div>{% endif %}
+            </div>
+            <div style="padding-top:.4rem;">
+                <div style="font-weight:700;font-size:.95rem;">Preparando despacho</div>
+                <div
+                    style="font-size:.82rem;color:{% if respuesta >= 1 %}var(--accent){% else %}var(--text-muted){% endif %};">
+                    {% if respuesta >= 1 %}<i class="fa fa-circle-check me-1"></i> Completado{% else %}Pendiente{% endif
+                    %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: En camino -->
+        <div style="display:flex;align-items:flex-start;gap:1.2rem;margin-bottom:1.5rem;">
+            <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0;">
+                <div
+                    style="width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+                        {% if respuesta >= 2 %}background:var(--accent-grad);{% else %}background:rgba(255,255,255,.06);border:1px solid var(--glass-border);{% endif %}">
+                    <i class="fa fa-truck"
+                        style="color:{% if respuesta >= 2 %}#fff{% else %}var(--text-muted){% endif %};font-size:.9rem;"></i>
+                </div>
+                {% if respuesta < 3 %}<div
+                    style="width:2px;height:40px;background:{% if respuesta >= 3 %}var(--accent){% else %}var(--glass-border){% endif %};margin-top:.25rem;">
+            </div>{% endif %}
+        </div>
+        <div style="padding-top:.4rem;">
+            <div style="font-weight:700;font-size:.95rem;">En camino</div>
+            <div
+                style="font-size:.82rem;color:{% if respuesta >= 2 %}var(--accent){% else %}var(--text-muted){% endif %};">
+                {% if respuesta >= 2 %}<i class="fa fa-circle-check me-1"></i> En tránsito{% elif respuesta == 1 %}<i
+                    class="fa fa-clock me-1"></i> Próximamente{% else %}Pendiente{% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Step 3: Entregado -->
+    <div style="display:flex;align-items:flex-start;gap:1.2rem;">
+        <div style="flex-shrink:0;">
+            <div
+                style="width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+                        {% if respuesta >= 3 %}background:linear-gradient(135deg,#34d399,#059669);{% else %}background:rgba(255,255,255,.06);border:1px solid var(--glass-border);{% endif %}">
+                <i class="fa fa-house"
+                    style="color:{% if respuesta >= 3 %}#fff{% else %}var(--text-muted){% endif %};font-size:.9rem;"></i>
+            </div>
+        </div>
+        <div style="padding-top:.4rem;">
+            <div style="font-weight:700;font-size:.95rem;">Entregado</div>
+            <div style="font-size:.82rem;color:{% if respuesta >= 3 %}#34d399{% else %}var(--text-muted){% endif %};">
+                {% if respuesta >= 3 %}<i class="fa fa-circle-check me-1"></i> ¡Recibido!{% else %}Pendiente{% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Status Banner -->
+<div style="margin-top:2rem;padding:1rem 1.25rem;background:rgba(79,142,247,.08);
+            border:1px solid rgba(79,142,247,.2);border-radius:10px;text-align:center;">
+    <p style="margin:0;font-weight:600;">{{ mensaje }}</p>
+</div>
+{% endif %}
+</div>
+</div>
 {% endblock %}

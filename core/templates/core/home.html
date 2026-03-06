@@ -1,96 +1,246 @@
 {% extends 'core/base.html' %}
 {% load static %}
+
 {% block contenido %}
-{% block js %}
-    {% if messages %}
-        {% for m in messages %}
-            <script>
-                Swal.fire({
-                    "title": "{{m}}",
-                    "icon": "success"
-                })
-            </script>
-        {% endfor %}
-    {% endif %}
-{% endblock %}
-<div id="myCarousel" class="carousel slide bg-dark" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="{% static 'core/img/aire-slider1.jpg' %}" alt="" width="100%" height="600px" style="opacity: .5;">
-            <div class="container">
-                <div class="carousel-caption text-start">
-                <h1>ANWO</h1>
-                <p>¡Nos hemos asociado con ANWO para traerte los mejores equipos!</p>
-                <p><a class="btn btn-lg btn-primary" href="https://www.anwo.cl/">Ver página</a></p>
+
+<!-- ── HERO ──────────────────────────────────────── -->
+<section class="hero-section" style="
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0a0e1a 0%, #111829 60%, #0d1022 100%);
+">
+    <!-- Ambient blobs -->
+    <div style="position:absolute;top:-100px;left:-100px;width:500px;height:500px;
+        background:radial-gradient(circle, rgba(79,142,247,.18) 0%, transparent 70%);
+        pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-100px;right:-80px;width:400px;height:400px;
+        background:radial-gradient(circle, rgba(124,58,237,.15) 0%, transparent 70%);
+        pointer-events:none;"></div>
+
+    <div class="container" style="position:relative;z-index:2;">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <span class="section-label">
+                    <i class="fa fa-snowflake me-1"></i> CLIMATIZACIÓN PREMIUM
+                </span>
+                <h1 style="font-size:clamp(2.4rem,5vw,3.6rem);font-weight:800;line-height:1.1;margin-bottom:1.25rem;">
+                    El confort que<br>
+                    <span
+                        style="background:var(--accent-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+                        mereces,
+                    </span><br>donde lo necesitas
+                </h1>
+                <p style="color:var(--text-muted);font-size:1.1rem;max-width:460px;margin-bottom:2rem;line-height:1.7;">
+                    Somos especialistas en venta e instalación de aires acondicionados en toda Sudamérica.
+                    Productos ANWO al mejor precio, con servicio técnico garantizado.
+                </p>
+                <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+                    <a href="{% url 'productos' %}" class="btn-primary-ba" style="padding:.7rem 1.8rem;font-size:1rem;">
+                        Ver productos <i class="fa fa-arrow-right ms-2"></i>
+                    </a>
+                    <a href="{% url 'servicios' %}" class="btn-ghost" style="padding:.7rem 1.4rem;font-size:.95rem;">
+                        Nuestros servicios
+                    </a>
+                </div>
+                <!-- Stats -->
+                <div style="display:flex;gap:2.5rem;margin-top:3rem;">
+                    <div>
+                        <div style="font-size:1.8rem;font-weight:800;color:var(--accent);">+500</div>
+                        <div style="font-size:.78rem;color:var(--text-muted);font-weight:500;">Clientes satisfechos
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size:1.8rem;font-weight:800;color:var(--accent);">10+</div>
+                        <div style="font-size:.78rem;color:var(--text-muted);font-weight:500;">Años de experiencia</div>
+                    </div>
+                    <div>
+                        <div style="font-size:1.8rem;font-weight:800;color:var(--accent);">24h</div>
+                        <div style="font-size:.78rem;color:var(--text-muted);font-weight:500;">Soporte técnico</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 d-none d-lg-flex justify-content-center">
+                <div style="position:relative;width:100%;max-width:580px;">
+                    <div
+                        style="position:absolute;inset:0;background:var(--accent-grad);border-radius:30% 70% 70% 30% / 30% 30% 70% 70%;opacity:.12;filter:blur(40px);">
+                    </div>
+                    <div class="glass-card" style="width:100%;border-radius:24px;overflow:hidden;aspect-ratio:16/9;">
+                        <img src="{% static 'core/img/aire_ac_banner.jpg' %}" alt="Aire acondicionado"
+                            style="width:100%;height:100%;object-fit:cover;opacity:.85;">
+                    </div>
+                    <!-- Floating badge -->
+                    <div class="glass-card"
+                        style="position:absolute;bottom:-20px;left:-30px;padding:.75rem 1.1rem;display:flex;align-items:center;gap:.7rem;min-width:200px;">
+                        <div
+                            style="width:40px;height:40px;background:var(--accent-grad);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+                            <i class="fa fa-star" style="color:#fff;font-size:.9rem;"></i>
+                        </div>
+                        <div>
+                            <div style="font-weight:700;font-size:.9rem;">Socio ANWO</div>
+                            <div style="font-size:.75rem;color:var(--text-muted);">Distribuidor oficial</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="carousel-item">
-            <img src="{% static 'core/img/aire-slider2.jpg' %}" alt="" width="100%" height="600px" style="opacity: .5;">
+    </div>
+</section>
 
-        <div class="container">
-            <div class="carousel-caption">
-                <h1>Los mejores productos</h1>
-                <p>Aires acondicionados y repuestos al mejor precio.</p>
-                <p><a class="btn btn-lg btn-primary" href="{% url 'productos' %}">Ver más</a></p>
+<!-- ── FEATURES ────────────────────────────────── -->
+<section class="container" style="margin-top:6rem;">
+    <div class="text-center mb-5">
+        <span class="section-label">POR QUÉ ELEGIRNOS</span>
+        <h2 class="section-title">Lo que nos hace diferentes</h2>
+    </div>
+    <div class="row g-4">
+        {% for feat in features %}{% endfor %}
+        <!-- (rendered inline) -->
+        <div class="col-md-4">
+            <div class="glass-card p-4 h-100">
+                <div
+                    style="width:48px;height:48px;background:rgba(79,142,247,.12);border:1px solid rgba(79,142,247,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem;">
+                    <i class="fa fa-shield-halved" style="color:var(--accent);font-size:1.1rem;"></i>
+                </div>
+                <h5 style="font-weight:700;margin-bottom:.5rem;">Garantía certificada</h5>
+                <p style="color:var(--text-muted);font-size:.88rem;line-height:1.6;margin:0;">
+                    Todos nuestros equipos cuentan con garantía oficial del fabricante y soporte post-venta.
+                </p>
             </div>
         </div>
-        </div>
-        <div class="carousel-item">
-            <img src="{% static 'core/img/aire-slider3.jpg' %}" alt="" width="100%" height="600px" style="opacity: .5;">
-
-        <div class="container">
-            <div class="carousel-caption text-end">
-                <h1>Servicios</h1>
-                <p>Te treaemos servicios de mantención e instalación a la puerta de tu hogar.</p>
-                <p><a class="btn btn-lg btn-primary" href="{% url 'servicios' %}">Solicitar servicios</a></p>
+        <div class="col-md-4">
+            <div class="glass-card p-4 h-100">
+                <div
+                    style="width:48px;height:48px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem;">
+                    <i class="fa fa-truck-fast" style="color:#7c3aed;font-size:1.1rem;"></i>
+                </div>
+                <h5 style="font-weight:700;margin-bottom:.5rem;">Instalación express</h5>
+                <p style="color:var(--text-muted);font-size:.88rem;line-height:1.6;margin:0;">
+                    Técnicos certificados disponibles para instalación en tu domicilio en el menor tiempo posible.
+                </p>
             </div>
         </div>
+        <div class="col-md-4">
+            <div class="glass-card p-4 h-100">
+                <div
+                    style="width:48px;height:48px;background:rgba(79,142,247,.12);border:1px solid rgba(79,142,247,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem;">
+                    <i class="fa fa-headset" style="color:var(--accent);font-size:1.1rem;"></i>
+                </div>
+                <h5 style="font-weight:700;margin-bottom:.5rem;">Soporte 24/7</h5>
+                <p style="color:var(--text-muted);font-size:.88rem;line-height:1.6;margin:0;">
+                    Atendemos tus consultas y emergencias técnicas los siete días de la semana, todo el año.
+                </p>
+            </div>
         </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-</div>
+</section>
 
-
-<div class="container mt-5 mb-5">
-    <div class="row">
-        <div class="col-md-7 bg-light rounded">
-        <h2>Quienes somos. <span class="text-muted">Buenos Aires</span></h2>
-        <p>Somos una empresa dedicada a la venta e instalación de aires acondicionados a través de toda
-            Sudamérica, buscamos entregar los mejores servicios y productos a nuestros clientes y así 
-            conseguir una mejor forma de vida.</p>
+<!-- ── ABOUT ───────────────────────────────────── -->
+<section class="container" style="margin-top:6rem;">
+    <hr class="g-divider">
+    <div class="row align-items-center g-5">
+        <div class="col-lg-5">
+            <div style="position:relative;">
+                <div class="glass-card" style="border-radius:20px;overflow:hidden;aspect-ratio:4/3;">
+                    <img src="{% static 'core/img/imagen2.jpg' %}" alt="Quiénes somos"
+                        style="width:100%;height:100%;object-fit:cover;opacity:.75;">
+                </div>
+                <div class="glass-card" style="position:absolute;bottom:-20px;right:-20px;padding:.9rem 1.2rem;">
+                    <div
+                        style="font-size:.75rem;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:1px;">
+                        Fundada en
+                    </div>
+                    <div style="font-size:1.8rem;font-weight:800;color:var(--accent);line-height:1;">2012</div>
+                </div>
+            </div>
         </div>
-        <div class="col-md-5">
-        <img src="{% static 'core/img/imagen2.jpg' %}" alt="" width="500px" height="500px">
-
+        <div class="col-lg-7">
+            <span class="section-label">QUIÉNES SOMOS</span>
+            <h2 class="section-title mb-3">Buenos Aires,<br>tu partner en climatización</h2>
+            <p style="color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem;">
+                Somos una empresa dedicada a la venta e instalación de aires acondicionados a través de toda Sudamérica.
+                Buscamos entregar los mejores servicios y productos a nuestros clientes y así conseguir una mejor forma
+                de vida.
+            </p>
+            <div style="display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:2rem;">
+                <span class="badge-accent"><i class="fa fa-check me-1"></i> Tecnología inverter</span>
+                <span class="badge-accent"><i class="fa fa-check me-1"></i> Bajo consumo energético</span>
+                <span class="badge-accent"><i class="fa fa-check me-1"></i> Equipos ANWO</span>
+                <span class="badge-accent"><i class="fa fa-check me-1"></i> Financiamiento disponible</span>
+            </div>
+            <a href="{% url 'productos' %}" class="btn-primary-ba" style="padding:.65rem 1.6rem;">
+                Explorar catálogo <i class="fa fa-arrow-right ms-2"></i>
+            </a>
         </div>
     </div>
+</section>
 
-    <hr>
-
-    <div class="row">
-        <div class="col-md-7 order-md-2 bg-light rounded">
-        <h2>Productos y servicios. <span class="text-muted">Al mejor precio</span></h2>
-        <p>Únete a la mejor experiencia de vida junto a nuestros productos y servicios. </p>
-        <p>¡Entérate de todas las noticias sobre nuevos productos y servicios en nuestras redes sociales!
-        </p>
+<!-- ── SECOND ABOUT ────────────────────────────── -->
+<section class="container" style="margin-top:5rem;">
+    <hr class="g-divider">
+    <div class="row align-items-center g-5">
+        <div class="col-lg-7 order-1 order-lg-0">
+            <span class="section-label">SERVICIOS</span>
+            <h2 class="section-title mb-3">Productos y servicios<br>al mejor precio</h2>
+            <p style="color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem;">
+                Únete a la mejor experiencia de vida junto a nuestros productos y servicios.
+                ¡Entérate de todas las novedades en nuestras redes sociales!
+            </p>
+            <a href="{% url 'servicios' %}" class="btn-ghost" style="padding:.65rem 1.4rem;">
+                Ver servicios <i class="fa fa-arrow-right ms-2"></i>
+            </a>
         </div>
-        <div class="col-md-5 order-md-1">
-            <img src="{% static 'core/img/imagen4.jpg' %}" alt="" width="500px" height="500px">
+        <div class="col-lg-5 order-0 order-lg-1">
+            <div class="glass-card" style="border-radius:20px;overflow:hidden;aspect-ratio:4/3;">
+                <img src="{% static 'core/img/imagen4.jpg' %}" alt="Productos y servicios"
+                    style="width:100%;height:100%;object-fit:cover;opacity:.75;">
+            </div>
         </div>
     </div>
-</div>
+</section>
 
+<!-- ── CTA BANNER ───────────────────────────────── -->
+<section style="margin-top:6rem;padding:0 1rem;">
+    <div class="container">
+        <div
+            style="background:var(--accent-grad);border-radius:20px;padding:3rem 2.5rem;position:relative;overflow:hidden;">
+            <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;
+                background:rgba(255,255,255,.08);border-radius:50%;"></div>
+            <div style="position:absolute;bottom:-60px;left:20%;width:250px;height:250px;
+                background:rgba(255,255,255,.05);border-radius:50%;"></div>
+            <div style="position:relative;z-index:1;text-align:center;">
+                <h2 style="font-weight:800;font-size:1.9rem;color:#fff;margin-bottom:.75rem;">
+                    ¿Listo para tu nuevo aire acondicionado?
+                </h2>
+                <p style="color:rgba(255,255,255,.8);margin-bottom:1.75rem;">
+                    Regístrate y accede a precios exclusivos para clientes registrados.
+                </p>
+                {% if not user.is_authenticated %}
+                <a href="{% url 'registro' %}"
+                    style="background:#fff;color:#4f8ef7;padding:.75rem 2rem;border-radius:10px;font-weight:700;text-decoration:none;font-size:1rem;transition:opacity .2s;display:inline-block;">
+                    Comenzar ahora
+                </a>
+                {% else %}
+                <a href="{% url 'productos' %}"
+                    style="background:#fff;color:#4f8ef7;padding:.75rem 2rem;border-radius:10px;font-weight:700;text-decoration:none;font-size:1rem;display:inline-block;">
+                    Ver catálogo
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block js %}
+{% if messages %}
+{% for m in messages %}
+<script>
+    Swal.fire({ title: "{{m}}", icon: "success", background: "#131929", color: "#f0f4ff" })
+</script>
+{% endfor %}
+{% endif %}
 {% endblock %}

@@ -4,96 +4,432 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buenos Aires | Aires acondicionados | Servicios</title>
+    <title>Buenos Aires | Aires Acondicionados</title>
     {% load static %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+    <style>
+        :root {
+            --bg-dark:      #0a0e1a;
+            --bg-card:      rgba(255,255,255,0.04);
+            --glass-border: rgba(255,255,255,0.10);
+            --accent:       #4f8ef7;
+            --accent-2:     #7c3aed;
+            --accent-grad:  linear-gradient(135deg, #4f8ef7 0%, #7c3aed 100%);
+            --text-primary: #f0f4ff;
+            --text-muted:   #8892a4;
+            --nav-h:        72px;
+        }
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* ── NAVBAR ──────────────────────────────────────── */
+        .navbar-ba {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1050;
+            height: var(--nav-h);
+            background: rgba(10,14,26,0.75);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        .navbar-ba .brand {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            text-decoration: none;
+        }
+        .navbar-ba .brand-logo {
+            width: 38px; height: 38px;
+            background: var(--accent-grad);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 1rem;
+            color: #fff;
+        }
+        .navbar-ba .brand-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            letter-spacing: -.3px;
+        }
+        .navbar-ba .nav-links {
+            display: flex;
+            gap: .25rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar-ba .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: .9rem;
+            font-weight: 500;
+            padding: .45rem .9rem;
+            border-radius: 8px;
+            transition: color .2s, background .2s;
+        }
+        .navbar-ba .nav-links a:hover,
+        .navbar-ba .nav-links a.active {
+            color: var(--text-primary);
+            background: rgba(79,142,247,.12);
+        }
+        .navbar-ba .nav-actions {
+            display: flex;
+            gap: .6rem;
+            margin-left: auto;
+            align-items: center;
+        }
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            padding: .45rem 1.1rem;
+            border-radius: 8px;
+            font-size: .88rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: border-color .2s, background .2s;
+        }
+        .btn-ghost:hover {
+            border-color: var(--accent);
+            background: rgba(79,142,247,.08);
+            color: var(--text-primary);
+        }
+        .btn-primary-ba {
+            background: var(--accent-grad);
+            border: none;
+            color: #fff;
+            padding: .45rem 1.2rem;
+            border-radius: 8px;
+            font-size: .88rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: opacity .2s, transform .15s;
+            display: inline-block;
+        }
+        .btn-primary-ba:hover {
+            opacity: .88;
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        /* ── PAGE WRAPPER ────────────────────────────────── */
+        .page-wrapper {
+            padding-top: var(--nav-h);
+            min-height: 100vh;
+        }
+
+        /* ── GLASS CARD ──────────────────────────────────── */
+        .glass-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: border-color .25s, transform .25s, box-shadow .25s;
+        }
+        .glass-card:hover {
+            border-color: rgba(79,142,247,.35);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(79,142,247,.12);
+        }
+
+        /* ── SECTION TITLES ──────────────────────────────── */
+        .section-label {
+            display: inline-block;
+            font-size: .75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: .6rem;
+        }
+        .section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+        .section-sub {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* ── BADGE ───────────────────────────────────────── */
+        .badge-accent {
+            background: rgba(79,142,247,.15);
+            color: var(--accent);
+            border: 1px solid rgba(79,142,247,.25);
+            border-radius: 6px;
+            font-size: .75rem;
+            font-weight: 600;
+            padding: .25rem .6rem;
+        }
+
+        /* ── GRADIENT DIVIDER ────────────────────────────── */
+        .g-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+            border: none;
+            margin: 3rem 0;
+        }
+
+        /* ── FOOTER ──────────────────────────────────────── */
+        .footer-ba {
+            background: rgba(255,255,255,.02);
+            border-top: 1px solid var(--glass-border);
+            padding: 3rem 0 1.5rem;
+            margin-top: 5rem;
+        }
+        .footer-ba h6 {
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: .85rem;
+            letter-spacing: .5px;
+            margin-bottom: 1rem;
+        }
+        .footer-ba a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: .85rem;
+            display: block;
+            margin-bottom: .5rem;
+            transition: color .2s;
+        }
+        .footer-ba a:hover { color: var(--accent); }
+        .footer-social a {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px;
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-size: .9rem;
+            margin-right: .4rem;
+            transition: color .2s, border-color .2s, background .2s;
+        }
+        .footer-social a:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            background: rgba(79,142,247,.08);
+        }
+        .footer-copy {
+            color: var(--text-muted);
+            font-size: .8rem;
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        /* ── FORMS ───────────────────────────────────────── */
+        .form-control-ba, .form-select-ba {
+            background: rgba(255,255,255,.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            padding: .7rem 1rem;
+            font-size: .9rem;
+            transition: border-color .2s, box-shadow .2s;
+            width: 100%;
+        }
+        .form-control-ba:focus, .form-select-ba:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(79,142,247,.15);
+            background: rgba(255,255,255,.07);
+            color: var(--text-primary);
+        }
+        .form-control-ba::placeholder { color: var(--text-muted); }
+        .form-select-ba option { background: #1a2035; color: var(--text-primary); }
+        label.form-label-ba {
+            font-size: .83rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: .4rem;
+            letter-spacing: .3px;
+            display: block;
+        }
+
+        /* ── TABLE ───────────────────────────────────────── */
+        .table-ba { width: 100%; border-collapse: separate; border-spacing: 0; }
+        .table-ba th {
+            font-size: .75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            padding: .75rem 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .table-ba td {
+            color: var(--text-primary);
+            padding: .85rem 1rem;
+            border-bottom: 1px solid rgba(255,255,255,.04);
+            font-size: .9rem;
+            vertical-align: middle;
+        }
+        .table-ba tr:last-child td { border-bottom: none; }
+
+        /* ── ALERTS (SweetAlert override) ────────────────── */
+        .swal2-popup {
+            background: #131929 !important;
+            color: var(--text-primary) !important;
+            border: 1px solid var(--glass-border) !important;
+            border-radius: 16px !important;
+        }
+        .swal2-title { color: var(--text-primary) !important; }
+        .swal2-confirm { background: var(--accent) !important; border-radius: 8px !important; }
+
+        /* ── MISC ────────────────────────────────────────── */
+        .text-accent { color: var(--accent); }
+        .text-muted-ba { color: var(--text-muted); }
+        .rounded-xl { border-radius: 16px; }
+        select option { background-color: #1a2035 !important; }
+
+        /* ── Hamburger mobile ────────────────────────────── */
+        .nav-toggle {
+            display: none;
+            background: none; border: none;
+            color: var(--text-primary);
+            font-size: 1.4rem;
+            cursor: pointer;
+            margin-left: auto;
+        }
+        @media (max-width: 768px) {
+            .nav-toggle { display: block; }
+            .navbar-ba .nav-links { display: none; flex-direction: column; position: absolute;
+                top: var(--nav-h); left: 0; right: 0;
+                background: rgba(10,14,26,.97);
+                padding: 1rem; gap: .25rem; border-bottom: 1px solid var(--glass-border); }
+            .navbar-ba .nav-links.open { display: flex; }
+            .navbar-ba .nav-actions { display: none; }
+            .navbar-ba .nav-actions.open { display: flex; flex-direction: column;
+                position: absolute; top: calc(var(--nav-h) + 200px); left: 0; right: 0;
+                background: rgba(10,14,26,.97); padding: 1rem;
+                border-bottom: 1px solid var(--glass-border); }
+        }
+    </style>
 </head>
 <body>
 
-    <!--Menu-->
-    <div class="container-fluid navbar-dark bg-primary">
-        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
-            <a href="{% url 'home' %}" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-                <img src="{% static 'core/img/BA.png' %}" alt="">
-            </a>
-    
-            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-                <li><a class="nav-link px-2 {% if request.path == '/' %} text-white {% else %} text-white-50 {% endif %}" href="{% url 'home' %}">Home</a></li>
-                <li><a class="nav-link px-2 {% if request.path == '/productos/' %} text-white {% else %} text-white-50 {% endif %}" href="{% url 'productos' %}">Productos</a></li>
-                <li><a class="nav-link px-2 {% if request.path == '/servicios/' %} text-white {% else %} text-white-50 {% endif %}" href="{% url 'servicios' %}">Servicios</a></li>
-            </ul>
-    
-            <div class="col-md-3 text-end">
-                {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}" type="button" class="btn btn-primary"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                <a href="{% url 'perfil' %}" type="button" class="btn btn-primary">Perfil</a>
-                {% else %}
-                <a href="{% url 'login' %}" type="button" class="btn btn-primary">Login</a>
-                <a href="{% url 'registro' %}" type="button" class="btn btn-primary">Sign up</a>
-                {% endif %}
-            </div>
-        </header>
-    </div>
+    <!-- ── NAVBAR ─────────────────────────────────────── -->
+    <nav class="navbar-ba">
+        <a href="{% url 'home' %}" class="brand me-4">
+            <div class="brand-logo">BA</div>
+            <span class="brand-name">Buenos Aires</span>
+        </a>
 
-    <!--Contenido-->
-    <div class="container-fluid mt-2">
-        {% block contenido %}
-        {% endblock %}
-    </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Menú">
+            <i class="fa fa-bars"></i>
+        </button>
 
-    <!--Footer-->
-    <div class="container-fluid">
+        <ul class="nav-links ms-1" id="navLinks">
+            <li><a href="{% url 'home' %}" class="{% if request.path == '/' %}active{% endif %}">
+                <i class="fa fa-house me-1"></i> Home
+            </a></li>
+            <li><a href="{% url 'productos' %}" class="{% if 'productos' in request.path %}active{% endif %}">
+                <i class="fa fa-box me-1"></i> Productos
+            </a></li>
+            <li><a href="{% url 'servicios' %}" class="{% if 'servicios' in request.path %}active{% endif %}">
+                <i class="fa fa-wrench me-1"></i> Servicios
+            </a></li>
+        </ul>
 
-        <div class="row p-5 pb-2 bg-primary text-white">
-
-            <div class="col-xs-12 col-md-6 col-lg-3">
-                <p class="h3 mb-3">Buenos Aires</p>
-                <a href="#" class="text-white"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" class="text-white"><i class="fa-brands fa-facebook-square"></i></a>
-                <a href="#" class="text-white"><i class="fa-brands fa-twitter-square"></i></a>
-                <a href="#" class="text-white"><i class="fa-brands fa-linkedin"></i></a>
-            </div>
-            <div class="col-xs-12 col-md-6 col-lg-3">
-                <p class="h5 mb-3">Contacto</p>
-                <div class="mb-2">
-                    <a href="#" class="text-white text-decoration-none">Teléfonos de contacto</a>
-                </div>
-            </div>
-            <div class="col-xs-12 col-md-6 col-lg-3">
-                <p class="h5 mb-3">Soporte técnico</p>
-                <div class="mb-2">
-                    <a href="#" class="text-white text-decoration-none">Servicio técnico</a>
-                </div>
-                <div class="mb-2">
-                    <a href="#" class="text-white text-decoration-none">Repuestos equipos Anwo</a>
-                </div>
-            </div>
-            <div class="col-xs-12 col-md-6 col-lg-3">
-                <p class="h5 mb-3">Documentos</p>
-                <div class="mb-2">
-                    <a href="#" class="text-white text-decoration-none">Terminos y condiciones</a>
-                </div>
-                <div class="mb-2">
-                    <a href="#" class="text-white text-decoration-none">Politica de devoluciones</a>
-                </div>
-            </div>
-
-            <div class="col-xs-12 pt-4">
-                <p class="text-white text-center">Copyright © BuenosAires 2022. Todos los derechos reservados.</p>
-            </div>
+        <div class="nav-actions" id="navActions">
+            {% if user.is_authenticated %}
+                <a href="{% url 'perfil' %}" class="btn-ghost">
+                    <i class="fa fa-user me-1"></i> {{ user.username }}
+                </a>
+                <a href="{% url 'logout' %}" class="btn-ghost">
+                    <i class="fa fa-right-from-bracket me-1"></i> Salir
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn-ghost">Iniciar sesión</a>
+                <a href="{% url 'registro' %}" class="btn-primary-ba">Registrarse</a>
+            {% endif %}
         </div>
+    </nav>
 
-        
+    <!-- ── CONTENT ─────────────────────────────────────── -->
+    <div class="page-wrapper">
+        {% block contenido %}{% endblock %}
     </div>
 
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    {% block js %}
-    {% endblock %}
+    <!-- ── FOOTER ──────────────────────────────────────── -->
+    <footer class="footer-ba">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="brand mb-3">
+                        <div class="brand-logo">BA</div>
+                        <span class="brand-name">Buenos Aires</span>
+                    </div>
+                    <p style="color:var(--text-muted);font-size:.87rem;max-width:260px;">
+                        Empresa dedicada a la venta e instalación de aires acondicionados en Sudamérica.
+                    </p>
+                    <div class="footer-social mt-3">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-2 offset-md-2">
+                    <h6>Navegación</h6>
+                    <a href="{% url 'home' %}">Home</a>
+                    <a href="{% url 'productos' %}">Productos</a>
+                    <a href="{% url 'servicios' %}">Servicios</a>
+                </div>
+                <div class="col-md-2">
+                    <h6>Soporte</h6>
+                    <a href="#">Servicio técnico</a>
+                    <a href="#">Repuestos ANWO</a>
+                </div>
+                <div class="col-md-2">
+                    <h6>Legal</h6>
+                    <a href="#">Términos y condiciones</a>
+                    <a href="#">Política de devoluciones</a>
+                </div>
+            </div>
+            <p class="footer-copy">Copyright © Buenos Aires 2025. Todos los derechos reservados.</p>
+        </div>
+    </footer>
 
-    <script src="https://kit.fontawesome.com/8d882167f9.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>        
+    <!-- ── SCRIPTS ──────────────────────────────────────── -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Mobile nav toggle
+        const navToggle = document.getElementById('navToggle');
+        const navLinks  = document.getElementById('navLinks');
+        const navActions = document.getElementById('navActions');
+        navToggle?.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+            navActions.classList.toggle('open');
+        });
+    </script>
+    {% block js %}{% endblock %}
+
 </body>
 </html>
